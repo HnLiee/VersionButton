@@ -40,21 +40,25 @@
 {
     // 获取当前版本
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
-    NSString *newAppVersion = [appInfo substringFromIndex:[appInfo rangeOfString:@"\"version\":"].location+10];
-    newAppVersion = [[newAppVersion substringToIndex:[newAppVersion rangeOfString:@","].location] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
+    NSString *OldAppVersion = [appInfo substringFromIndex:[appInfo rangeOfString:@"\"version\":"].location+10];
+    OldAppVersion = [[OldAppVersion substringToIndex:[OldAppVersion rangeOfString:@","].location] stringByReplacingOccurrencesOfString:@"\"" withString:@""];
     /**
      * 判断，如果当前版本与发布的版本不同，则进入更新。如果相等，那么当前就是最高版本
      */
-    if (![newAppVersion isEqualToString:version]) {
+    if (![OldAppVersion isEqualToString:version]) {
 //        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"有新版本啦,请尽快更新哦!"] preferredStyle:UIAlertControllerStyleAlert];
 //        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"暂不更新" style:UIAlertActionStyleCancel handler:nil];
 //        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"立即更新" style:UIAlertActionStyleDefault handler:nil];
 //        [alertView addAction:cancelAction];
 //        [alertView addAction:okAction];
 //        [[self presentViewController:alertView animated:YES completion:nil];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"有新版本啦,请尽快更新哦!"] delegate:self.class cancelButtonTitle:@"知道了" otherButtonTitles:@"前往更新",nil];
-        alert.delegate = self;
-        [alert show];
+        float VerFloat = [version floatValue];
+        float OldFloat = [OldAppVersion floatValue];
+        if (VerFloat < OldFloat) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:[NSString stringWithFormat:@"有新版本啦,请尽快更新哦!"] delegate:self.class cancelButtonTitle:@"知道了" otherButtonTitles:@"前往更新",nil];
+            alert.delegate = self;
+            [alert show];
+        }
     }
 }
 
